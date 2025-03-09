@@ -1,4 +1,4 @@
-import { ScaleLoader } from 'react-spinners'
+import { RingLoader } from 'react-spinners'
 
 const Loader = () => {
     return (
@@ -11,7 +11,7 @@ const Loader = () => {
       items-center 
     '
         >
-            <ScaleLoader size={100} color='red' />
+            <RingLoader size={100}/>
         </div>
     )
 }
