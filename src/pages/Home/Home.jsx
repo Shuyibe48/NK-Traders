@@ -1,22 +1,24 @@
-import { useEffect } from "react";
-import baseUrl from "../../api/baseUrl";
+import Banner from "../../components/banner/Banner";
+import BodyType from "../../components/bodyType/BodyType";
+import CarListing from "../../components/carListings/CarListings";
+import ExclusiveSection from "../../components/exclusiveSection/ExclusiveSection";
+import Newsletter from "../../components/newsLetter/NewsLetter";
+import Footer from "../../components/shared/Footer";
+import Navbar from "../../components/shared/Navbar";
+import TopBrand from "../../components/topBrand/TopBrand";
 
 const Home = () => {
-  useEffect(()=>{
-    const token = localStorage.getItem("access-token");
-    const user = async ()=> {
-      const res = await baseUrl.get(`/users/me`, {
-        headers: {
-          Authorization: `${token}`,
-        },
-      });
-    }
-    user()
-  }, [])
   return (
-    <>
-     Home
-    </>
+    <div>
+      <Navbar />
+      <Banner />
+      <CarListing/>
+      <BodyType />
+      <TopBrand/>
+      <ExclusiveSection/>
+      <Newsletter/>
+      <Footer/>
+    </div>
   );
 };
 

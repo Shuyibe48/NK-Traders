@@ -39,11 +39,16 @@ const Login = () => {
     <div className="bg-gray-50 min-h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded-xl shadow-md w-[400px]">
         {/* Logo Inside Form Container */}
-        <div className="flex justify-center mb-6">
-        <img src={Logo} alt="logo" width={95} height={95} />
-        </div>
+        <Link to="/"><div className="flex items-center font-bold sm:text-xl">
+          <p className="bg-secondary text-white px-1 py-[0.20rem] sm:py-0 border-2 border-black border-r-0">
+            NK
+          </p>
+          <p className="border-2 border-black px-1 py-[0.20rem] sm:py-0 border-l-0">
+            Traders<span className="text-secondary">.</span>
+          </p>
+        </div></Link>
 
-        <div className="text-center mb-6">
+        <div className="text-center my-6">
           <h1 className="text-2xl font-semibold text-gray-800">
             Log in to your account
           </h1>
@@ -57,7 +62,7 @@ const Login = () => {
               size={20}
             />
             <input
-              value={'SA-0001'}
+              
               ref={emailRef}
               type="text"
               name="email"
@@ -88,7 +93,7 @@ const Login = () => {
               size={20}
             />
             <input
-              value={'admin12345'}
+              
               type="password"
               name="password"
               required
@@ -124,7 +129,7 @@ const Login = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-red-600 text-white w-full py-3 rounded-lg font-semibold hover:bg-red-700 transition"
+            className="bg-secondary text-white w-full py-3 rounded-lg font-semibold hover:bg-red-700 transition"
           >
             {loading ? (
               <TbFidgetSpinner className="m-auto animate-spin" size={24} />
@@ -142,7 +147,7 @@ const Login = () => {
 
         <p className="text-center text-gray-500 mt-4 text-xs">
           Don't have an account yet?{" "}
-          <Link to="/signup" className="text-red-600 font-semibold">
+          <Link to="/login" className="text-red-600 font-semibold">
             Sign up
           </Link>
         </p>
