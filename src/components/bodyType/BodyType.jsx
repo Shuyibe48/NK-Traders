@@ -32,7 +32,7 @@ function BodyType() {
   const [selectedType, setSelectedType] = useState("");
 
   return (
-    <div>
+    <div className="bg-white">
       <Container>
         <div className="py-10">
           {/* Title */}

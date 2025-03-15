@@ -10,10 +10,12 @@ const AuthProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("user")) || null
   );
   const [loading, setLoading] = useState(true);
+  const [showProjects, setShowProjects] = useState(false);
+  const [showPriority, setShowPriority] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const loginUser = async (email, password, navigate, from) => {
     setLoading(true);
-
     try {
       const response = await baseUrl.post(`/auth/login`, {
         id: email,
@@ -63,6 +65,12 @@ const AuthProvider = ({ children }) => {
     logoutUser,
     loading,
     setLoading,
+    showProjects,
+    setShowProjects,
+    showPriority,
+    setShowPriority,
+    isSidebarCollapsed,
+    setIsSidebarCollapsed,
   };
 
   return (

@@ -1,9 +1,9 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useContext, useRef, useState } from "react";
 import { TbFidgetSpinner } from "react-icons/tb";
-import Logo from "../../assets/images/logo.png";
 import { AuthContext } from "../../providers/AuthProvider";
 import { MdEmail, MdPassword } from "react-icons/md";
+import Logo from "../../components/shared/Logo";
 
 const Login = () => {
   const { loading, setLoading, loginUser } = useContext(AuthContext);
@@ -39,15 +39,8 @@ const Login = () => {
     <div className="bg-gray-50 min-h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded-xl shadow-md w-[400px]">
         {/* Logo Inside Form Container */}
-        <Link to="/"><div className="flex items-center font-bold sm:text-xl">
-          <p className="bg-secondary text-white px-1 py-[0.20rem] sm:py-0 border-2 border-black border-r-0">
-            NK
-          </p>
-          <p className="border-2 border-black px-1 py-[0.20rem] sm:py-0 border-l-0">
-            Traders<span className="text-secondary">.</span>
-          </p>
-        </div></Link>
-
+        <Logo/>
+        
         <div className="text-center my-6">
           <h1 className="text-2xl font-semibold text-gray-800">
             Log in to your account

@@ -21,10 +21,9 @@ body {
   height: 100%;
   width: 100%;
   @apply text-sm;
-  @apply bg-white;
+  @apply bg-gray-500;
   @apply text-gray-900;
 }
-
 
 /* Customize the scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
@@ -51,9 +50,13 @@ body {
   background-color: #f43f5d9d; /* Thumb color when active */
 }
 
-
 .card {
-  background: linear-gradient(to top, black, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  background: linear-gradient(
+    to top,
+    black,
+    rgba(0, 0, 0, 0.5),
+    rgba(0, 0, 0, 0)
+  );
   color: white;
   padding: 16px;
   border-radius: 8px;
