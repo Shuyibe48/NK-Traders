@@ -1,12 +1,199 @@
-import React from "react";
+import {
+  ResponsiveContainer,
+  CartesianGrid,
+  Legend,
+  Tooltip,
+  XAxis,
+  YAxis,
+  AreaChart,
+  Area,
+} from "recharts";
+import { format, parseISO } from "date-fns";
 import Container from "../../components/dashboard/shared/Container";
+import { useEffect, useState } from "react";
+import baseUrl from "../../api/baseUrl";
+import { Car, Users, ShoppingCart, Eye, MousePointerClick } from "lucide-react";
 
 const Dashboard = () => {
+  // Demo data for users, listings, and revenue
+  const [users, setUsers] = useState({
+    owners: 34,
+    agents: 57,
+    buyers: 39,
+  });
+  const [listings, setListings] = useState([]);
+  const [revenueData, setRevenueData] = useState([]);
+
+  // Helper function to format dates and group by month-year
+  const getMonthlyData = (data, key) => {
+    const result = {};
+    data.forEach((item) => {
+      const date = parseISO(item[key]);
+      const monthYear = format(date, "MMM-yyyy");
+
+      if (!result[monthYear]) {
+        result[monthYear] = { totalAmount: 0, count: 0 };
+      }
+
+      result[monthYear].totalAmount += Number(item?.plan?.price) || 0;
+      result[monthYear].count += 1;
+    });
+
+    // Convert result into an array sorted by month-year
+    return Object.entries(result)?.map(([key, value]) => ({
+      month: key,
+      ...value,
+    }));
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const agents = await baseUrl.get("/agents/get-agents");
+      const buyers = await baseUrl.get("/buyers/get-buyers");
+      const properties = await baseUrl.get("/properties/get-properties");
+      const payments = await baseUrl.get("/payments/get-payments");
+      const totalCompletePayments = payments?.data?.data?.filter(
+        (payment) =>
+          payment?.paymentStatus === "completed" ||
+          payment?.paymentStatus === "pending"
+      );
+      setListings(properties?.data?.data);
+      setRevenueData(totalCompletePayments);
+      setUsers({
+        owners: buyers?.data?.data?.length,
+        agents: agents?.data?.data?.length,
+        buyers: buyers?.data?.data?.total,
+      });
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  const viewData = [
+    {
+      date: "2024-10-01",
+      dailyViews: 200,
+      weeklyViews: 1400,
+      monthlyViews: 6000,
+    },
+    {
+      date: "2024-11-01",
+      dailyViews: 250,
+      weeklyViews: 1750,
+      monthlyViews: 7500,
+    },
+    {
+      date: "2024-12-01",
+      dailyViews: 220,
+      weeklyViews: 1540,
+      monthlyViews: 6800,
+    },
+  ];
+
+  const totalActiveListings = Array.isArray(listings)
+    ? listings.filter(
+        (listing) => listing?.approved === true && listing?.blocked === false
+      ).length
+    : 0;
+
+  const totalInactiveListings = Array.isArray(listings)
+    ? listings.filter(
+        (listing) =>
+          listing?.approved === false ||
+          listing?.blocked === true ||
+          listing?.reject === true
+      ).length
+    : 0;
+
+  const revenueByMonth = getMonthlyData(revenueData, "createdAt");
+
   return (
-    <div>
+    <div className="mt-6">
       <Container>
-        <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum, recusandae, libero officiis vel, temporibus ratione adipisci cupiditate voluptatibus numquam aspernatur eligendi doloribus corporis quod atque quaerat repellendus. Est, quis porro! Eius perferendis molestiae ipsum totam, ullam qui quaerat temporibus reprehenderit veniam fuga inventore. Minus nostrum impedit sequi quia, maiores totam odit deserunt voluptatibus culpa asperiores numquam distinctio repudiandae eaque accusantium magni quod similique saepe minima nobis ad expedita cum ducimus dolorum! Sed natus asperiores explicabo tenetur rem quisquam quidem iure quas mollitia fugit? Beatae impedit dolor explicabo enim, recusandae magnam sapiente veritatis? Esse, vel impedit quidem fugiat molestiae quibusdam repellat. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil facilis, minus quam, placeat perspiciatis aliquam laboriosam sed ex hic officiis sapiente sequi ratione? Doloribus, qui? Fugit fuga quibusdam adipisci! Ducimus magnam dicta ipsum maxime hic dignissimos, ratione praesentium molestias omnis repellat distinctio eligendi eveniet iure eos tenetur, quo dolorem. Voluptatem, consequuntur eum! Possimus aperiam sit, deserunt temporibus provident ut. Odit repellendus fugiat reprehenderit nihil mollitia et nam eius. Laudantium blanditiis repudiandae placeat! Qui minus pariatur autem sit optio nihil necessitatibus dignissimos saepe nesciunt nulla explicabo soluta officia earum reiciendis, quam repudiandae, hic fugit assumenda alias quidem voluptas, aliquid at! Odit optio eos sit sequi vero rem rerum tenetur architecto, commodi, aliquid perferendis voluptatibus soluta consequuntur dolorem aliquam ipsam, sunt perspiciatis placeat fugit cum nisi sapiente? Minus quaerat inventore possimus praesentium suscipit. Facere delectus ad minus at harum sint excepturi vel nisi, est voluptatum, earum dolores necessitatibus ducimus accusantium quae voluptate sequi? Atque non numquam esse in consectetur animi voluptatum natus suscipit sint, minus repudiandae beatae placeat soluta totam qui facilis, ut provident amet earum fuga laborum quas quisquam. Unde, excepturi beatae praesentium non, quia temporibus totam maiores quas voluptates provident dolorem vero! Aliquam, recusandae doloribus. A saepe repudiandae repellendus ex odio tenetur alias obcaecati dolorem nobis doloremque, nostrum aliquam amet quas maiores excepturi aliquid laudantium labore sunt, laboriosam ut. Tempora doloremque repudiandae consequatur distinctio nostrum quod sunt magnam iure laboriosam! Natus doloribus ex expedita ab? Velit iusto, aliquam beatae sint hic totam et pariatur repellendus earum eligendi ipsam, labore quasi provident aspernatur reprehenderit cumque iste sequi laudantium temporibus? Amet cumque doloremque, earum illum velit iusto repudiandae incidunt! Deserunt sed eligendi, aut sapiente cum ullam odio vel. Aperiam ad minima voluptas maiores culpa. Dignissimos praesentium, mollitia quaerat voluptatibus repellendus perspiciatis! Nostrum repellendus nesciunt, in eum dolores vitae asperiores, laboriosam mollitia, labore id ipsa harum voluptas nemo fuga explicabo distinctio reiciendis enim quas odio. Quae alias, ullam quisquam vitae est aut ut nulla? Fugiat consequuntur magni iusto, molestias, sit odio obcaecati laboriosam, ea illum soluta minus dolore excepturi. Inventore, a dicta dignissimos quam libero nihil quibusdam fuga in. Recusandae tenetur maiores eius laboriosam fugiat temporibus repellendus incidunt facilis, praesentium itaque ea autem exercitationem? Harum, et? Iste, voluptatem! Distinctio aspernatur tempore dolor, commodi vel quos fugit ipsa a, voluptatum veniam dolorum. Suscipit ab eligendi nobis reprehenderit magni similique, quasi illo ad cupiditate voluptatibus, minus cumque quae officia. Nam pariatur animi eligendi omnis nobis. Impedit tempore eum unde dicta sapiente praesentium aperiam provident! Pariatur beatae minima quibusdam, labore veritatis nemo nobis illum eius. Dolore ratione voluptas laborum quibusdam quasi eius minus saepe, rerum sequi nisi cupiditate dicta explicabo corporis ea quo aperiam suscipit enim ducimus distinctio sit doloribus odit atque animi. Ea voluptatem voluptates enim distinctio iure sed, voluptas ad rem ab aspernatur laudantium dolor! Saepe dignissimos laudantium iste beatae accusantium molestiae. Incidunt in, voluptas perspiciatis iure at iste blanditiis, aperiam, qui minus aliquam necessitatibus laboriosam ducimus? Officiis, officia dignissimos ipsum ex quo, nesciunt vitae perspiciatis nostrum quas eligendi quibusdam et! Sequi dicta quae aperiam sapiente. Voluptates, possimus. Quia quibusdam atque porro perferendis fuga impedit architecto asperiores ex eum, minima suscipit voluptas ad et temporibus sit. Provident a distinctio autem voluptates qui aspernatur. Earum quidem temporibus qui corrupti delectus quia molestias debitis aliquam, aspernatur dicta ad dolorum natus animi alias enim tempore amet. Expedita ducimus earum iure quaerat mollitia quidem voluptatibus sit voluptas id nulla dicta nisi rerum sed harum necessitatibus sequi culpa omnis eos dolor magni, laudantium, eius, odit aliquid reprehenderit? Ipsum, quia ducimus commodi incidunt reiciendis repellendus, quae autem porro ab dolor, consequuntur quasi aperiam unde tempora dolorem facere magni doloremque ratione rerum corporis harum fugit molestias doloribus! Voluptas, distinctio. Illo ducimus quas quibusdam, consectetur voluptatibus, quisquam similique rem quo voluptate laboriosam repudiandae impedit ab voluptas. Quia animi ullam ducimus minima aperiam cupiditate natus molestias ea consectetur perferendis. Laudantium dolore quas qui. Vitae maiores autem nesciunt accusamus aperiam iusto, odio omnis, a laborum excepturi totam, praesentium similique consequuntur dignissimos ducimus hic. Error quidem quos eligendi veritatis obcaecati rem pariatur expedita, voluptas nostrum, rerum explicabo beatae, iste consequatur incidunt corrupti sunt? Quos veritatis ipsa, laboriosam harum aliquid numquam nulla odit atque quia necessitatibus, magnam tempora natus excepturi minima nesciunt. Aperiam, libero natus sapiente culpa illo eum fuga voluptates eius maiores necessitatibus error dolor inventore sint laboriosam incidunt saepe? Necessitatibus magni vel ratione omnis eaque esse modi nulla optio obcaecati tempore consectetur quaerat sed adipisci veritatis, architecto quam dolor officiis a doloremque! Laborum natus id fugit ab nobis consequuntur dolorum est error quam qui veniam tempora, dolorem iure, blanditiis magnam eos? Voluptas vero illum, corporis iusto necessitatibus maiores nostrum facere officia, dolores doloribus, eos voluptate! In praesentium voluptatum assumenda, voluptatem dolorem, consectetur omnis quos odio, laudantium non quod esse? Earum aperiam inventore architecto error nam, porro esse vitae accusamus maiores pariatur, quam magni. Quibusdam non tempora aperiam reprehenderit officia tempore, molestias illo repudiandae maiores dignissimos dolor alias sint, vitae magnam sit et natus. Eligendi fugiat quasi, tenetur culpa assumenda laudantium qui obcaecati magni porro et ab, fugit repudiandae aut. Illo, optio facere velit pariatur earum hic nostrum quibusdam tempore perferendis? Veritatis mollitia tempore odio non alias inventore quam reprehenderit assumenda molestiae ea asperiores natus, cupiditate, excepturi, accusamus nisi ducimus id maiores vero fugit consequatur beatae hic vitae sit. Quidem corporis, dignissimos ex necessitatibus nostrum ea assumenda, ipsa repellendus magni aliquam, quis doloremque. Nesciunt optio ipsam, quae quas libero fugiat eveniet saepe autem repellendus corporis officia praesentium quam nulla magnam voluptas, eligendi sunt. Doloribus neque minus nisi. Neque quasi, dicta dignissimos, ut officiis sunt, voluptatibus pariatur sit rem deserunt quaerat tenetur praesentium eum numquam? Ex error fugiat ipsa hic aspernatur vero facere? Quod maxime, dignissimos distinctio hic atque debitis, facere optio placeat doloribus ratione quas tempore architecto consectetur nesciunt mollitia totam culpa quae? Accusantium facere eveniet cum illum dolorum, veritatis sequi soluta ipsa quam officiis! Labore laudantium dolor ea, impedit ipsam consectetur dicta nihil nulla placeat. Placeat sapiente eveniet nihil laborum cupiditate magnam laboriosam suscipit culpa animi. Ratione nesciunt illo ex iste? Maxime, voluptate cumque.
+        <div className="bg-white p-6">
+          <div className="mb-4">
+            <h5 className="font-bold text-xl">Dashboard Overview</h5>
+            <p className="text-[#9bbcd1] text-xs">
+              Welcome to the NK-Traders Admin Dashboard!
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+            {/* Total Users */}
+            <div className="bg-[#F0F3F8] p-4 flex items-center gap-3">
+              <Users className="bg-[#264AA1] p-2 rounded-full text-white w-8 h-8" />
+              <div>
+                <p className="font-medium">Total Users</p>
+                <h3 className="text-xl font-semibold">
+                  {users.owners + users.agents + users.buyers}
+                </h3>
+              </div>
+            </div>
+
+            {/* Total Cars */}
+            <div className="bg-[#F0F3F8] p-4 flex items-center gap-3">
+              <Car className="bg-[#264AA1] p-2 rounded-full text-white w-8 h-8" />
+              <div>
+                <p className="font-medium">Total Cars</p>
+                <h3 className="text-xl font-semibold">{users.buyers}</h3>
+              </div>
+            </div>
+
+            {/* Sold Cars */}
+            <div className="bg-[#F0F3F8] p-4 flex items-center gap-3">
+              <ShoppingCart className="bg-[#264AA1] p-2 rounded-full text-white w-8 h-8" />
+              <div>
+                <p className="font-medium">Sold Cars</p>
+                <h3 className="text-xl font-semibold">{totalActiveListings}</h3>
+              </div>
+            </div>
+
+            {/* Views */}
+            <div className="bg-[#F0F3F8] p-4 flex items-center gap-3">
+              <Eye className="bg-[#264AA1] p-2 rounded-full text-white w-8 h-8" />
+              <div>
+                <p className="font-medium">Total Views</p>
+                <h3 className="text-xl font-semibold">
+                  {totalInactiveListings}
+                </h3>
+              </div>
+            </div>
+
+            {/* Clicks */}
+            <div className="bg-[#F0F3F8] p-4 flex items-center gap-3">
+              <MousePointerClick className="bg-[#264AA1] p-2 rounded-full text-white w-8 h-8" />
+              <div>
+                <p className="font-medium">Total Clicks</p>
+                <h3 className="text-xl font-semibold">
+                  {totalInactiveListings}
+                </h3>
+              </div>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            {/* Revenue Card */}
+            <div className="bg-[#F0F3F8] p-6">
+              <h3 className="text-xl font-semibold mb-4">Monthly Revenue</h3>
+              <ResponsiveContainer width="100%" height={250}>
+                <AreaChart data={revenueByMonth}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="month" />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Area
+                    type="monotone"
+                    dataKey="totalAmount"
+                    stroke="#82ca9d"
+                    fill="#82ca9d"
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
         </div>
       </Container>
     </div>

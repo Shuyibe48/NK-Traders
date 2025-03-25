@@ -1,6 +1,7 @@
 import React from "react";
 import { BsWhatsapp } from "react-icons/bs";
 import { FaFacebookF, FaInstagram, FaYoutube } from "react-icons/fa";
+import Logo from "./Logo";
 
 const Footer = () => {
   return (
@@ -10,15 +11,8 @@ const Footer = () => {
         <div className="flex flex-wrap">
           {/* 1st Column */}
           <div className="w-1/2 md:w-1/4 mb-6 md:mb-0">
-            <div className="flex items-center font-bold sm:text-xl mb-2">
-              <p className="bg-secondary text-white px-1 py-[0.20rem] sm:py-0 border-2 border-white border-r-0">
-                NK
-              </p>
-              <p className="border-2 border-white px-1 py-[0.20rem] sm:py-0 border-l-0">
-                Traders<span className="text-secondary">.</span>
-              </p>
-            </div>
-            <ul className="space-y-2 text-xs sm:text-sm md:text-base">
+            <Logo/>
+            <ul className="space-y-2 text-xs sm:text-sm md:text-base mt-2">
               <li>
                 <a href="#home" className="hover:underline">
                   Home

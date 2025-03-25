@@ -3,11 +3,13 @@ import {
   AlertOctagon,
   AlertTriangle,
   Briefcase,
+  Car,
   ChevronDown,
   ChevronUp,
   Home,
   Layers3,
   LockIcon,
+  Plus,
   Search,
   Settings,
   ShieldAlert,
@@ -19,6 +21,7 @@ import { AuthContext } from "../../providers/AuthProvider";
 import { useContext } from "react";
 import HostMenu from "./HostMenu";
 import DarkLogo from "../shared/DarkLogo";
+import Logo from "../shared/Logo";
 
 const Sidebar = () => {
   const {
@@ -38,7 +41,7 @@ const Sidebar = () => {
     <div className={sidebarClassNames}>
       <div className="flex h-[100%] w-full flex-col justify-start">
         <div className="z-50 flex min-h-[56px] w-64 items-center justify-between bg-black px-6 pt-3">
-          <DarkLogo/>
+          <Logo/>
           {/* {isSidebarCollapsed ? null : ( */}
           <button
             className="py-3"
@@ -63,12 +66,12 @@ const Sidebar = () => {
         </div>
         {/* navbar links */}
         <nav className="z-10 w-full">
-          <HostMenu icon={Home} label="Dashboard" href="/dashboard" />
-          <HostMenu icon={Briefcase} label="Timeline" href="/timeline" />
-          <HostMenu icon={Search} label="Search" href="/search" />
-          <HostMenu icon={Settings} label="Settings" href="/settings" />
+          <HostMenu icon={Home} label="Dashboard" href="/dashboard/dashboard-overview" />
+          <HostMenu icon={Plus} label="Add Car" href="/dashboard/add-cars" />
+          <HostMenu icon={Car} label="Cars" href="/search" />
           <HostMenu icon={User} label="Users" href="/users" />
           <HostMenu icon={Users} label="Teams" href="/teams" />
+          <HostMenu icon={Settings} label="Settings" href="/settings" />
         </nav>
 
         {/* project */}

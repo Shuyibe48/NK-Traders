@@ -4,15 +4,22 @@ import SignUp from "../pages/SignUp/SignUp";
 import Login from "../pages/Login/Login";
 import DashboardLayout from "../layout/DashboardLayout";
 import Dashboard from "../pages/Dashboard/Dashboard";
+import SingleCarListings from "../pages/CarListings/SingleCarListings";
+import MainLayout from "../layout/MainLayout";
+import AddCars from "../pages/Dashboard/AddCars";
 
 export const router = createBrowserRouter([
   {
     path: "/",
-    element: <Home />,
+    element: <MainLayout />,
     children: [
       {
-        path: "/blog",
+        path: "/",
         element: <Home />,
+      },
+      {
+        path: "/car-listings/:id",
+        element: <SingleCarListings />,
       },
     ],
   },
@@ -21,8 +28,12 @@ export const router = createBrowserRouter([
     element: <DashboardLayout />,
     children: [
       {
-        path: "/dashboard",
+        path: "/dashboard/dashboard-overview",
         element: <Dashboard />,
+      },
+      {
+        path: "/dashboard/add-cars",
+        element: <AddCars />,
       },
     ],
   },

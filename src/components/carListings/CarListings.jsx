@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const cars = [
   {
@@ -49,7 +50,8 @@ const CarListing = () => {
         <h2 className="font-bold text-gray-700 mb-2 text-xl">Most recent cars for sale in Bangladesh</h2>
       <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
         {cars.map((car) => (
-          <div
+          <Link
+            to={`/car-listings/1`}
             key={car.id}
             className="bg-white rounded-lg shadow-md overflow-hidden"
           >
@@ -72,7 +74,7 @@ const CarListing = () => {
                 📍 {car.location}
               </p>
             </div>
-          </div>
+          </Link>
         ))}
 
         {/* View More Card */}

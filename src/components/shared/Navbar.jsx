@@ -61,7 +61,7 @@ const Navbar = () => {
           </div>
           {user ? (
             <button className="w-7 h-7 flex items-center justify-center hover:bg-primary text-primary font-semibold hover:text-white border border-primary duration-200 rounded-full sm:hidden">
-              <Link to="/dashboard">
+              <Link to="/dashboard/dashboard-overview">
                 <User />
               </Link>
             </button>
@@ -87,7 +87,7 @@ const Navbar = () => {
                 {user ? (
                   <div className="hidden sm:block">
                     <button className="w-7 h-7 flex items-center justify-center hover:bg-primary text-primary font-semibold hover:text-white border border-primary duration-200 rounded-full">
-                      <Link to="/dashboard">
+                      <Link to="/dashboard/dashboard-overview">
                         <User />
                       </Link>
                     </button>
@@ -139,7 +139,7 @@ const Navbar = () => {
               </button>
               {user ? (
                 <button className="w-7 h-7 flex items-center justify-center hover:bg-primary text-primary font-semibold hover:text-white border border-primary duration-200 rounded-full">
-                  <Link to="/dashboard">
+                  <Link to="/dashboard/dashboard-overview">
                     <User />
                   </Link>
                 </button>

@@ -1,30 +1,22 @@
 import React, { useState } from "react";
 import { AiOutlineSearch } from "react-icons/ai";
 
-function FilterBox() {
+const brandModelMapping = {
+  toyota: ["Allion", "Premio", "Corolla", "Axio"],
+  bmw: ["X1", "X3", "X5", "3 Series", "5 Series"],
+  honda: ["Civic", "City", "Accord"],
+  ford: ["Fiesta", "Focus", "Mustang"],
+  yamaha: ["R15", "MT-15", "FZ", "Fazer"],
+  suzuki: ["Gixxer", "GSX-R", "Hayabusa"],
+  volvo: ["FH", "FMX", "FM", "VNL"],
+};
+
+const FilterBox = () => {
   const [activeTab, setActiveTab] = useState("cars");
   const [brand, setBrand] = useState("");
   const [model, setModel] = useState("");
-  const [minPrice, setMinPrice] = useState(1);
-  const [maxPrice, setMaxPrice] = useState(100000001);
-
-  const handleTabChange = (tab) => {
-    setActiveTab(tab);
-    setBrand("");
-    setModel("");
-    setMinPrice(1);
-    setMaxPrice(100000001);
-  };
-
-  const brandModelMapping = {
-    toyota: ["Allion", "Premio", "Corolla", "Axio"],
-    bmw: ["X1", "X3", "X5", "3 Series", "5 Series"],
-    honda: ["Civic", "City", "Accord"],
-    ford: ["Fiesta", "Focus", "Mustang"],
-    yamaha: ["R15", "MT-15", "FZ", "Fazer"],
-    suzuki: ["Gixxer", "GSX-R", "Hayabusa"],
-    volvo: ["FH", "FMX", "FM", "VNL"],
-  };
+  const [minPrice, setMinPrice] = useState(1000);
+  const [maxPrice, setMaxPrice] = useState(1000000);
 
   const modelsForSelectedBrand = brandModelMapping[brand] || [];
 
@@ -35,126 +27,84 @@ function FilterBox() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto bg-white shadow-lg rounded-lg p-2 sm:p-4">
-      {/* Tab Menu */}
-      <div className="flex space-x-4 border-b border-gray-200 pb-1">
+    <div className="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6 space-y-4 border border-gray-200">
+      <div className="flex justify-center gap-4">
         {["cars", "bikes", "trucks"].map((tab) => (
           <button
             key={tab}
-            className={`pb-1 text-[0.50rem] sm:text-xs font-semibold capitalize transition-colors duration-200 ${
-              activeTab === tab
-                ? "text-red-500 border-b-2 border-red-500"
-                : "text-gray-500 hover:text-gray-700"
-            }`}
-            onClick={() => handleTabChange(tab)}
+            className={`px-4 py-2 rounded-md text-sm font-semibold transition-all duration-200 
+              ${activeTab === tab ? "bg-red-500 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}
+            onClick={() => setActiveTab(tab)}
           >
-            {tab}
+            {tab.toUpperCase()}
           </button>
         ))}
       </div>
 
-      {/* Filter Fields */}
-      <div className="grid grid-cols-1 gap-2 mt-4">
-        {/* Brand and Model in one row */}
-        <div className="grid grid-cols-2 gap-2">
-          {/* Brand */}
-          <div className="flex flex-col">
-            <label htmlFor="brand" className="text-[0.50rem] sm:text-xs text-gray-600 mb-1">
-              BRAND
-            </label>
-            <select
-              id="brand"
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
-              className="border border-gray-300 rounded-lg px-2 py-1 text-[0.50rem] sm:text-xs focus:outline-none focus:ring-1 focus:ring-red-500"
-            >
-              <option value="">All</option>
-              {activeTab === "cars" && (
-                <>
-                  <option value="toyota">Toyota</option>
-                  <option value="bmw">BMW</option>
-                  <option value="honda">Honda</option>
-                  <option value="ford">Ford</option>
-                </>
-              )}
-              {activeTab === "bikes" && (
-                <>
-                  <option value="yamaha">Yamaha</option>
-                  <option value="suzuki">Suzuki</option>
-                  <option value="honda">Honda</option>
-                </>
-              )}
-              {activeTab === "trucks" && (
-                <>
-                  <option value="volvo">Volvo</option>
-                  <option value="ford">Ford</option>
-                  <option value="toyota">Toyota</option>
-                </>
-              )}
-            </select>
-          </div>
+      <div className="grid grid-cols-1 gap-4">
+        {/* Brand */}
+        <div>
+          <label className="block text-gray-600 text-sm mb-1">Brand</label>
+          <select
+            className="w-full p-2 border rounded-md focus:ring focus:ring-red-300"
+            value={brand}
+            onChange={(e) => setBrand(e.target.value)}
+          >
+            <option value="">Select a brand</option>
+            {Object.keys(brandModelMapping).map((b) => (
+              <option key={b} value={b}>{b.toUpperCase()}</option>
+            ))}
+          </select>
+        </div>
 
-          {/* Model */}
-          <div className="flex flex-col">
-            <label htmlFor="model" className="text-[0.50rem] sm:text-xs text-gray-600 mb-1">
-              MODEL
-            </label>
-            <select
-              id="model"
-              value={model}
-              onChange={(e) => setModel(e.target.value)}
-              className="border border-gray-300 rounded-lg px-2 py-1 text-[0.50rem] sm:text-xs focus:outline-none focus:ring-1 focus:ring-red-500"
-              disabled={!brand}
-            >
-              {!brand && <option value="">Select brand first</option>}
-              {brand &&
-                modelsForSelectedBrand.map((m) => (
-                  <option value={m} key={m}>
-                    {m}
-                  </option>
-                ))}
-            </select>
-          </div>
+        {/* Model */}
+        <div>
+          <label className="block text-gray-600 text-sm mb-1">Model</label>
+          <select
+            className="w-full p-2 border rounded-md focus:ring focus:ring-red-300"
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+            disabled={!brand}
+          >
+            <option value="">{brand ? "Select a model" : "Select brand first"}</option>
+            {modelsForSelectedBrand.map((m) => (
+              <option key={m} value={m}>{m}</option>
+            ))}
+          </select>
         </div>
 
         {/* Price Range */}
-        <div className="flex flex-col">
-          <p className="text-[0.50rem] sm:text-xs text-gray-600 mb-1">PRICE RANGE</p>
-          <div className="flex items-center space-x-1">
-            <span className="text-[0.50rem] sm:text-xs">From {minPrice.toLocaleString()}</span>
+        <div>
+          <label className="block text-gray-600 text-sm mb-1">Price Range</label>
+          <div className="flex items-center gap-2">
             <input
-              type="range"
-              min="1"
-              max="100000001"
+              type="number"
+              className="w-full p-2 border rounded-md"
               value={minPrice}
               onChange={(e) => setMinPrice(e.target.value)}
-              className="w-full"
-            />
-            <input
-              type="range"
               min="1"
-              max="100000001"
+            />
+            <span className="text-gray-600">to</span>
+            <input
+              type="number"
+              className="w-full p-2 border rounded-md"
               value={maxPrice}
               onChange={(e) => setMaxPrice(e.target.value)}
-              className="w-full"
+              max="10000000"
             />
-            <span className="text-[0.50rem] sm:text-xs">To {maxPrice.toLocaleString()}</span>
           </div>
         </div>
 
         {/* Search Button */}
-        <div className="flex justify-end mt-2">
-          <button
-            onClick={handleSearch}
-            className="flex items-center bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded-lg text-[0.50rem] sm:text-xs font-semibold transition-colors duration-200"
-          >
-            <AiOutlineSearch className="mr-1" />
-            Search
-          </button>
-        </div>
+        <button
+          onClick={handleSearch}
+          className="w-full bg-red-500 text-white py-2 rounded-md flex items-center justify-center gap-2 hover:bg-red-600 transition"
+        >
+          <AiOutlineSearch /> Search
+        </button>
       </div>
     </div>
   );
-}
+};
 
 export default FilterBox;
