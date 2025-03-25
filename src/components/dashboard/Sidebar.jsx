@@ -2,7 +2,6 @@ import {
   AlertCircle,
   AlertOctagon,
   AlertTriangle,
-  Briefcase,
   Car,
   ChevronDown,
   ChevronUp,
@@ -10,7 +9,6 @@ import {
   Layers3,
   LockIcon,
   Plus,
-  Search,
   Settings,
   ShieldAlert,
   User,
@@ -20,7 +18,6 @@ import {
 import { AuthContext } from "../../providers/AuthProvider";
 import { useContext } from "react";
 import HostMenu from "./HostMenu";
-import DarkLogo from "../shared/DarkLogo";
 import Logo from "../shared/Logo";
 
 const Sidebar = () => {
@@ -42,14 +39,12 @@ const Sidebar = () => {
       <div className="flex h-[100%] w-full flex-col justify-start">
         <div className="z-50 flex min-h-[56px] w-64 items-center justify-between bg-black px-6 pt-3">
           <Logo/>
-          {/* {isSidebarCollapsed ? null : ( */}
           <button
             className="py-3"
             onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
           >
             <X className="h-6 w-6 text-white hover:text-[#adb7cb]" />
           </button>
-          {/* )} */}
         </div>
         {/* Team */}
         <div className="flex items-center gap-5 px-8 py-4">
