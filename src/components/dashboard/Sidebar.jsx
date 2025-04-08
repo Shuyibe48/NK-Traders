@@ -12,6 +12,7 @@ import {
   Settings,
   ShieldAlert,
   User,
+  UserPen,
   Users,
   X,
 } from "lucide-react";
@@ -19,6 +20,7 @@ import { AuthContext } from "../../providers/AuthProvider";
 import { useContext } from "react";
 import HostMenu from "./HostMenu";
 import Logo from "../shared/Logo";
+import { Avatar } from "antd";
 
 const Sidebar = () => {
   const {
@@ -63,74 +65,12 @@ const Sidebar = () => {
         <nav className="z-10 w-full">
           <HostMenu icon={Home} label="Dashboard" href="/dashboard/dashboard-overview" />
           <HostMenu icon={Plus} label="Add Car" href="/dashboard/add-cars" />
-          <HostMenu icon={Car} label="Cars" href="/search" />
-          <HostMenu icon={User} label="Users" href="/users" />
-          <HostMenu icon={Users} label="Teams" href="/teams" />
-          <HostMenu icon={Settings} label="Settings" href="/settings" />
+          <HostMenu icon={Car} label="Cars" href="/dashboard/manage-cars" />
+          <HostMenu icon={User} label="Users" href="/dashboard/manage-users" />
+          <HostMenu icon={Users} label="Teams" href="/dashboard/team" />
+          <HostMenu icon={Settings} label="Settings" href="/dashboard/setting" />
+          <HostMenu icon={UserPen} label="Profile" href="/dashboard/profile" />
         </nav>
-
-        {/* project */}
-        <button
-          onClick={() => setShowProjects((prev) => !prev)}
-          className="flex w-full items-center justify-between px-8 py-3 text-[#adb7cb]"
-        >
-          <span className="">Projects</span>
-          {showProjects ? (
-            <ChevronUp className="h-5 w-5" />
-          ) : (
-            <ChevronDown className="h-5 w-5" />
-          )}
-        </button>
-        {/* project list */}
-        {showProjects && (
-          <>
-            <HostMenu
-              icon={AlertCircle}
-              label="Urgent"
-              href="/projects/urgent"
-            />
-            <HostMenu icon={ShieldAlert} label="High" href="/projects/high" />
-            <HostMenu
-              icon={AlertTriangle}
-              label="Medium"
-              href="/projects/medium"
-            />
-            <HostMenu icon={AlertOctagon} label="Low" href="/projects/low" />
-            <HostMenu icon={Layers3} label="Backlog" href="/projects/backlog" />
-          </>
-        )}
-
-
-        {/* priority */}
-        <button
-          onClick={() => setShowPriority((prev) => !prev)}
-          className="flex w-full items-center justify-between px-8 py-3 text-[#adb7cb]"
-        >
-          <span className="">Priority</span>
-          {showPriority ? (
-            <ChevronUp className="h-5 w-5" />
-          ) : (
-            <ChevronDown className="h-5 w-5" />
-          )}
-        </button>
-        {/* priority list */}
-        {showPriority && (
-          <>
-            <HostMenu
-              icon={AlertCircle}
-              label="Urgent"
-              href="/projects/urgent"
-            />
-            <HostMenu icon={ShieldAlert} label="High" href="/projects/high" />
-            <HostMenu
-              icon={AlertTriangle}
-              label="Medium"
-              href="/projects/medium"
-            />
-            <HostMenu icon={AlertOctagon} label="Low" href="/projects/low" />
-            <HostMenu icon={Layers3} label="Backlog" href="/projects/backlog" />
-          </>
-        )}
       </div>
     </div>
   );

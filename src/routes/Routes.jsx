@@ -7,6 +7,12 @@ import Dashboard from "../pages/Dashboard/Dashboard";
 import SingleCarListings from "../pages/CarListings/SingleCarListings";
 import MainLayout from "../layout/MainLayout";
 import AddCars from "../pages/Dashboard/AddCars";
+import ManageCars from "../pages/Dashboard/ManageCars";
+import ManageUsers from "../pages/Dashboard/ManageUsers";
+import Team from "../pages/Dashboard/Team";
+import Setting from "../pages/Dashboard/Setting";
+import Profile from "../pages/Dashboard/Profile";
+import CarListingPage from "../pages/CarListings/CarListingPage";
 
 export const router = createBrowserRouter([
   {
@@ -16,6 +22,10 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/car-listings",
+        element: <CarListingPage />,
       },
       {
         path: "/car-listings/:id",
@@ -34,6 +44,26 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/add-cars",
         element: <AddCars />,
+      },
+      {
+        path: "/dashboard/manage-cars",
+        element: <ManageCars />,
+      },
+      {
+        path: "/dashboard/manage-users",
+        element: <ManageUsers />,
+      },
+      {
+        path: "/dashboard/team",
+        element: <Team/>,
+      },
+      {
+        path: "/dashboard/setting",
+        element: <Setting />,
+      },
+      {
+        path: "/dashboard/profile",
+        element: <Profile />,
       },
     ],
   },
